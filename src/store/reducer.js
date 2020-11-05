@@ -5,7 +5,7 @@ import * as tool from '../tools/tools';
 const defaultState = fromJS({
   columns: [
     {
-      title: 'Game',
+      title: 'Round',
       dataIndex: 'game',
       width: 80,
       fixed: true
@@ -25,7 +25,10 @@ const defaultState = fromJS({
     key: 1322,
     game: '2',
     John: "4",
-  }]
+  }],
+  total: {
+    John: 6
+  }
 })
 
 export default (state = defaultState, action) => {
@@ -40,10 +43,16 @@ export default (state = defaultState, action) => {
       let newData = tool.updateTableData(state.get('data').toJS(), action.value, 0)
       return state.merge({
         columns: List(state.get('columns')).push(newColumn),
-        data: List(newData)
+        data: List(newData),
+        total: state.get('total').set(action.value, 0)
       });
     case actionTypes.EDIT_SCORE:
-      return state.set('data', List(action.newData));
+      let newTotal = tool.calcTotal(action.newData, state.get('total').toJS())
+      console.log(newTotal)
+      return state.merge({
+        data: List(action.newData),
+        total: Map(newTotal)
+      })
     case actionTypes.ADD_ROW:
       let newRow = tool.insertTableData(state.get('columns').toJS(), state.get('data').toJS().length)
       return state.set('data', List(state.get('data').push(newRow)))

@@ -84,6 +84,9 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
+const renderSummary = (totalValue) => (totalValue.map(i => <Table.Summary.Cell>{i}</Table.Summary.Cell>))
+
+const checkSum = (totalValueList) => eval(totalValueList.join('+'))
 
 class EditableTable extends React.Component {
   constructor(props) {
@@ -93,6 +96,8 @@ class EditableTable extends React.Component {
       count: props.dataSource.length,
     };
   }
+
+
 
   operation = {
     title: 'operation',
@@ -181,15 +186,17 @@ class EditableTable extends React.Component {
           rowClassName={() => 'editable-row'}
           bordered
           dataSource={dataSource}
-          scroll={{x:600, y:200}}
+          scroll={{ x: 600, y: 200 }}
           columns={[...columns, this.operation]}
           summary={(pageData) => {
             let totalA = 0;
             return (
               <Table.Summary.Row>
                 <Table.Summary.Cell>Total</Table.Summary.Cell>
+                {renderSummary(this.props.totalValue)}
                 <Table.Summary.Cell>
-                  <span>sss</span>
+                  <span style={{ fontWeight: "bold" }}>checksum: </span>
+                  <span>{checkSum(this.props.totalValue)}</span>
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             )

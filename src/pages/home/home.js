@@ -85,6 +85,8 @@ class Home extends Component {
         <MyTable
           dataSource={this.props.data}
           columns={this.props.columns}
+          total={this.props.total}
+          totalValue={Object.values(this.props.total)}
           pagination={false}
           scroll={{ y: 600 }}
         />
@@ -97,6 +99,7 @@ const mapStateToProps = (state) => {
   return {
     columns: state.get('columns').toJS(),
     data: state.get('data').toJS(),
+    total: state.get('total').toJS()
   }
 }
 

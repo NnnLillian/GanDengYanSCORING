@@ -38,3 +38,23 @@ export const deleteTableData = (data, key) => {
   result.map((r, index) => (r.game = index + 1))
   return result
 }
+
+/**
+ * 计算各Account的total
+ * @param {Array[Object]} data 
+ * @param {Object} total 
+ */
+export const calcTotal = (data, total) => {
+
+  Object.keys(total).forEach((key) => {
+    total[key] = 0
+  })
+
+  data.map(item => {
+    Object.keys(total).forEach((key) => {
+      total[key] = total[key] + Number(item[key])
+    })
+  })
+  return total
+
+}
