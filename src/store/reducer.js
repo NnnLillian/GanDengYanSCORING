@@ -11,6 +11,13 @@ const defaultState = fromJS({
       fixed: true
     },
     {
+      title: 'Booms',
+      dataIndex: 'boom',
+      width: 80,
+      editable: true,
+      fixed: true
+    },
+    {
       title: 'John',
       dataIndex: 'John',
       editable: true,
@@ -20,10 +27,12 @@ const defaultState = fromJS({
   data: [{
     key: 1,
     game: '1',
+    boom: 0,
     John: "2",
   }, {
     key: 1322,
     game: '2',
+    boom: 0,
     John: "4",
   }],
   total: {
@@ -48,7 +57,6 @@ export default (state = defaultState, action) => {
       });
     case actionTypes.EDIT_SCORE:
       let newTotal = tool.calcTotal(action.newData, state.get('total').toJS())
-      console.log(newTotal)
       return state.merge({
         data: List(action.newData),
         total: Map(newTotal)
@@ -58,7 +66,11 @@ export default (state = defaultState, action) => {
       return state.set('data', List(state.get('data').push(newRow)))
     case actionTypes.DELETE_ROW:
       let afterDeleteRow = tool.deleteTableData(state.get('data').toJS(), action.rowKey)
-      return state.set('data', List(afterDeleteRow))
+      let newTotals = tool.calcTotal(afterDeleteRow, state.get('total').toJS())
+      return state.merge({
+        data: List(afterDeleteRow),
+        total: Map(newTotals)
+      })
     default:
       return state;
   }

@@ -192,9 +192,9 @@ class EditableTable extends React.Component {
             let totalA = 0;
             return (
               <Table.Summary.Row>
-                <Table.Summary.Cell>Total</Table.Summary.Cell>
+                <Table.Summary.Cell colSpan={2} index={0}>Total</Table.Summary.Cell>
                 {renderSummary(this.props.totalValue)}
-                <Table.Summary.Cell>
+                <Table.Summary.Cell fixed="right">
                   <span style={{ fontWeight: "bold" }}>checksum: </span>
                   <span>{checkSum(this.props.totalValue)}</span>
                 </Table.Summary.Cell>

@@ -23,6 +23,7 @@ export const insertTableData = (column, count) => {
   column.map(c => {
     newData[c.dataIndex] = 0
   })
+  newData.boom = 0;
   newData.game = count + 1;
   return newData
 }

@@ -5,8 +5,12 @@ import { connect } from 'react-redux';
 import store from '../../store'
 import * as actionTypes from '../../store/constants';
 import { MyTable } from '../../component/table';
+import { formatCountdown } from 'antd/lib/statistic/utils';
+import { fromJS } from 'immutable';
 
 class Home extends Component {
+
+  formRef = React.createRef()
 
   state = {
     visible: false,
@@ -20,6 +24,7 @@ class Home extends Component {
   };
 
   onClose = () => {
+    this.formRef.current.resetFields()
     this.setState({
       visible: false,
     });
@@ -69,7 +74,7 @@ class Home extends Component {
             </div>
           }
         >
-          <Form layout="vertical" hideRequiredMark>
+          <Form layout="vertical" hideRequiredMark ref={this.formRef}>
             <Form.Item
               name="name"
               label="Name"
