@@ -45,17 +45,43 @@ export const deleteTableData = (data, key) => {
  * @param {Array[Object]} data 
  * @param {Object} total 
  */
-export const calcTotal = (data, total) => {
+export const calcTotal = (data, total, setting) => {
 
   Object.keys(total).forEach((key) => {
     total[key] = 0
   })
 
   data.map(item => {
+    let pow = Math.pow(2, Number(item['boom']))
+    let win = 0
+    let winner = ''
     Object.keys(total).forEach((key) => {
-      total[key] = total[key] + Number(item[key])
+      let num = Number(item[key])
+      if (num > 1 && num < 5) {
+        total[key] = total[key] - Number(item[key]) * pow
+        win += Number(item[key]) * pow
+      } else if (num == 5) {
+        total[key] = total[key] - Number(item[key]) * pow * 2
+        win += Number(item[key]) * pow * 2
+      } else if (num == 0) {
+        winner = key
+      }
     })
+    if (winner.length > 0) {
+      total[winner] += win
+    }
+  })
+  return calcAccount(total, setting.money)
+}
+
+/**
+ * 折换成钱
+ * @param {Object} total 
+ * @param {String||Number} money 
+ */
+export const calcAccount = (total, money) => {
+  Object.keys(total).forEach((key) => {
+    total[key] *= Number(money)
   })
   return total
-
 }
