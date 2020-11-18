@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Drawer, Form, Input } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, SyncOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import store from '../../store'
 import * as actionTypes from '../../store/constants';
 import { MyTable } from '../../component/table';
-import { formatCountdown } from 'antd/lib/statistic/utils';
-import { fromJS } from 'immutable';
 
 class Home extends Component {
 
@@ -49,12 +47,13 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
-        <Button type="primary" shape="round" icon={<PlusOutlined />} onClick={this.showDrawer} style={{ float: "right" }}>
-          Add player
-        </Button>
+      <div style={{ margin: "20px" }}>
+        <div style={{ float: "right" }}>
+            <Button shape="circle" icon={<SyncOutlined />} style={{marginRight:'10px'}}/>
+          <Button type="primary" shape="round" icon={<PlusOutlined />} onClick={this.showDrawer}>Add player</Button>
+        </div>
         <Drawer
-          title="Create a new account"
+          title="Create a new player"
           width={300}
           onClose={this.onClose}
           visible={this.state.visible}

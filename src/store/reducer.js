@@ -1,19 +1,22 @@
 import { fromJS, List, Map } from 'immutable';
 import * as actionTypes from './constants';
 import * as tool from '../tools/tools';
+import { FireTwoTone, TrophyTwoTone } from '@ant-design/icons';
 
 const defaultState = fromJS({
   columns: [
     {
-      title: 'Round',
+      title: <TrophyTwoTone twoToneColor="#fed71a" />,
       dataIndex: 'game',
-      width: 80,
+      width: 30,
+      align: 'center',
       fixed: true
     },
     {
-      title: 'Booms',
+      title: <FireTwoTone twoToneColor="#de1c31" />,
       dataIndex: 'boom',
-      width: 80,
+      width: 30,
+      align: 'center',
       editable: true,
       fixed: true
     },
@@ -21,19 +24,19 @@ const defaultState = fromJS({
       title: 'John',
       dataIndex: 'John',
       editable: true,
-      width: 100
+      width: 80
     },
     {
       title: 'lillian',
       dataIndex: 'lillian',
       editable: true,
-      width: 100
+      width: 80
     },
     {
       title: 'Sam',
       editable: true,
       dataIndex: 'Sam',
-      width: 100
+      width: 80
     }
   ],
   data: [
@@ -43,7 +46,7 @@ const defaultState = fromJS({
       boom: 0,
       John: '2',
       lillian: '3',
-      Sam: 0
+      Sam: '0'
     },
     {
       key: 1322,
@@ -51,7 +54,7 @@ const defaultState = fromJS({
       boom: 0,
       John: '4',
       lillian: '5',
-      Sam: 0
+      Sam: '0'
     },
     {
       key: 1604725800822,
@@ -59,15 +62,17 @@ const defaultState = fromJS({
       boom: '1',
       John: '1',
       lillian: '5',
-      Sam: 0
+      Sam: '0'
     }],
   total: {
-    John: 7,
-    lillian: 13,
+    John: -7,
+    lillian: -13,
     Sam: 0
   },
   settings: {
-    money: 0.5 // 一张牌代表多少钱
+    money: 0.5, // 一张牌代表多少钱
+    all: true, // 全关是否翻倍
+    bomb: true, // 炸弹是否翻倍
   }
 })
 
@@ -78,9 +83,9 @@ export default (state = defaultState, action) => {
         title: action.value,
         editable: true,
         dataIndex: action.value,
-        width: 100
+        width: 80
       }
-      let newData = tool.updateTableData(state.get('data').toJS(), action.value, 0)
+      let newData = tool.updateTableData(state.get('data').toJS(), action.value, '0')
       return state.merge({
         columns: List(state.get('columns')).push(newColumn),
         data: List(newData),
@@ -102,6 +107,14 @@ export default (state = defaultState, action) => {
         data: List(afterDeleteRow),
         total: Map(newTotals)
       })
+    case actionTypes.EDIT_MONEY:
+      return state.setIn(['settings', 'money'], action.value)
+    case actionTypes.UPDATE_TOTAL:
+      return state.set('total', Map(tool.calcTotal(state.get('data').toJS(), state.get('total').toJS(), state.get('settings').toJS())))
+    case actionTypes.SWITCH_ALL:
+      return state.setIn(['settings', 'all'], action.checked)
+    case actionTypes.SWITCH_BOMB:
+      return state.setIn(['settings', 'bomb'], action.checked)
     default:
       return state;
   }

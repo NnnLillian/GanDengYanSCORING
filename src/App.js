@@ -7,6 +7,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import { Provider } from 'react-redux';
 import store from './store';
 import { MyMenu } from './component/menu';
+
 function App() {
   return (
     <Provider store={store}>

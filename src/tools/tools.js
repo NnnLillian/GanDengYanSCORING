@@ -6,9 +6,7 @@
  * @param {Any} defaultValue 
  */
 export const updateTableData = (list, key, defaultValue) => {
-  list.map((i) => {
-    i[key] = defaultValue
-  })
+  list.map((i) => i[key] = defaultValue)
   return list
 }
 
@@ -20,9 +18,7 @@ export const updateTableData = (list, key, defaultValue) => {
 export const insertTableData = (column, count) => {
   let newData = {}
   newData.key = new Date().getTime()
-  column.map(c => {
-    newData[c.dataIndex] = 0
-  })
+  column.map(c => newData[c.dataIndex] = 0)
   newData.boom = 0;
   newData.game = count + 1;
   return newData
@@ -51,19 +47,24 @@ export const calcTotal = (data, total, setting) => {
     total[key] = 0
   })
 
-  data.map(item => {
-    let pow = Math.pow(2, Number(item['boom']))
+  data.forEach(item => {
+    let pow = setting.bomb ? Math.pow(2, Number(item['boom'])) : 1
     let win = 0
     let winner = ''
     Object.keys(total).forEach((key) => {
       let num = Number(item[key])
       if (num > 1 && num < 5) {
-        total[key] = total[key] - Number(item[key]) * pow
+        total[key] -= Number(item[key]) * pow
         win += Number(item[key]) * pow
-      } else if (num == 5) {
-        total[key] = total[key] - Number(item[key]) * pow * 2
-        win += Number(item[key]) * pow * 2
-      } else if (num == 0) {
+      } else if (num === 5) {
+        if (setting.all) {
+          total[key] -= Number(item[key]) * pow * 2
+          win += Number(item[key]) * pow * 2
+        } else {
+          total[key] -= Number(item[key]) * pow
+          win += Number(item[key]) * pow
+        }
+      } else if (num === 0) {
         winner = key
       }
     })
@@ -84,4 +85,24 @@ export const calcAccount = (total, money) => {
     total[key] *= Number(money)
   })
   return total
+}
+
+export const wrongRow = (data) => {
+  let result = {
+    msg: 'no problem',
+    code: true
+  }
+  data.forEach(item => {
+    delete item.boom;
+    let scores = Object.values(item)
+    if (scores.indexOf("0") !== scores.lastIndexOf("0")) {
+      result.msg = "Several Winners?"
+      result.code = false
+    }
+    if (scores.indexOf("0") === -1) {
+      result.msg = "No Winner?"
+      result.code = true
+    }
+  })
+  return result;
 }

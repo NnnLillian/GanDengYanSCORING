@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form } from 'antd';
+import { Table, Input, Button, Popconfirm, Form, Tooltip } from 'antd';
+import { DeleteTwoTone, SettingTwoTone, AlertTwoTone, AlertOutlined } from '@ant-design/icons';
+import './style.css'
 import store from '../../store'
 import * as actionTypes from '../../store/constants';
 const EditableContext = React.createContext();
@@ -71,9 +73,6 @@ const EditableCell = ({
     ) : (
         <div
           className="editable-cell-value-wrap"
-          style={{
-            paddingRight: 24,
-          }}
           onClick={toggleEdit}
         >
           {children}
@@ -94,20 +93,24 @@ class EditableTable extends React.Component {
     this.state = {
       dataSource: props.dataSource,
       count: props.dataSource.length,
+      wrongMsg: {
+        msg:'try'
+      }
     };
   }
 
 
 
   operation = {
-    title: 'operation',
+    title: <SettingTwoTone twoToneColor="#999" />,
     dataIndex: 'operation',
     fixed: 'right',
-    width: 100,
+    width: 40,
+    align: 'center',
     render: (text, record) =>
       this.state.dataSource.length >= 1 ? (
         <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-          <a>Delete</a>
+          <DeleteTwoTone />
         </Popconfirm>
       ) : null,
   }
@@ -188,15 +191,13 @@ class EditableTable extends React.Component {
           dataSource={dataSource}
           scroll={{ x: 600, y: 200 }}
           columns={[...columns, this.operation]}
-          summary={(pageData) => {
-            let totalA = 0;
+          summary={() => {
             return (
               <Table.Summary.Row>
-                <Table.Summary.Cell colSpan={2} index={0}>Total</Table.Summary.Cell>
+                <Table.Summary.Cell className="ant-table-cell-fix-left ant-table-cell-fix-left-last" colSpan={2} index={0}>Total</Table.Summary.Cell>
                 {renderSummary(this.props.totalValue)}
-                <Table.Summary.Cell fixed="right">
-                  <span style={{ fontWeight: "bold" }}>checksum: </span>
-                  <span>{checkSum(this.props.totalValue)}</span>
+                <Table.Summary.Cell fixed="right" className="total-result ant-table-cell-fix-right ant-table-cell-fix-right-first">
+                  {checkSum(this.props.totalValue) ? <Tooltip title="something wrong"><AlertTwoTone twoToneColor="#c21f30" /></Tooltip> : <AlertOutlined style={{ color: '#999' }} />}
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             )

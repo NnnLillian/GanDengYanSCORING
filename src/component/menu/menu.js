@@ -11,14 +11,13 @@ class MyMenu extends React.Component {
   };
 
   handleClick = e => {
-    console.log('click ', e);
     this.setState({ current: e.key });
   };
 
   render() {
     const { current } = this.state;
     return (
-      <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
+      <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" style={{marginBottom:'18px'}}>
         <Menu.Item key="home" icon={<ReconciliationOutlined />}>
           Home
           <Link to='/' />
