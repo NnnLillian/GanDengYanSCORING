@@ -115,6 +115,13 @@ export default (state = defaultState, action) => {
       return state.setIn(['settings', 'all'], action.checked)
     case actionTypes.SWITCH_BOMB:
       return state.setIn(['settings', 'bomb'], action.checked)
+    case actionTypes.CLEAR_DATA:
+      return state.set('data', List([]))
+    case actionTypes.CLEAR_COLUMN:
+      return state.merge({
+        columns: defaultState.get('columns'),
+        total: Map({})
+      })
     default:
       return state;
   }

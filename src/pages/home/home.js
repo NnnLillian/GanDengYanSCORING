@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Drawer, Form, Input } from 'antd';
-import { PlusOutlined, SyncOutlined } from '@ant-design/icons';
+import { message, Button, Drawer, Form, Input } from 'antd';
+import { PlusOutlined, SyncOutlined, ClearOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import store from '../../store'
-import * as actionTypes from '../../store/constants';
+import * as actionCreators from '../../store/actionCreators';
 import { MyTable } from '../../component/table';
+
 
 class Home extends Component {
 
@@ -12,6 +13,7 @@ class Home extends Component {
 
   state = {
     visible: false,
+    clearVisible: false,
     inputValue: ''
   };
 
@@ -28,6 +30,11 @@ class Home extends Component {
     });
   };
 
+  onCloseClearDrawer = () => {
+    this.setState({
+      clearVisible: false,
+    });
+  }
 
   handleInputChange = (e) => {
     this.setState({
@@ -37,19 +44,40 @@ class Home extends Component {
 
 
   handleAccount = () => {
-    const action = {
-      value: this.state.inputValue,
-      type: actionTypes.ADD_ACCOUNT
-    }
-    store.dispatch(action)
+    store.dispatch(actionCreators.addAccountAction(this.state.inputValue))
     this.onClose()
+  }
+
+  refreshTotal = () => {
+    store.dispatch(actionCreators.calculateTotalAction())
+    message.success("Update TOTAL")
+  }
+
+  resetTable = () => {
+    this.setState({
+      clearVisible: true
+    })
+  }
+
+  handleTableData = () => {
+    store.dispatch(actionCreators.clearDataSource())
+    store.dispatch(actionCreators.calculateTotalAction())
+    this.setState({
+      clearVisible: false
+    })
+  }
+
+  handleTableAll = () => {
+    this.handleTableData()
+    store.dispatch(actionCreators.clearColumn())
   }
 
   render() {
     return (
       <div style={{ margin: "20px" }}>
         <div style={{ float: "right" }}>
-            <Button shape="circle" icon={<SyncOutlined />} style={{marginRight:'10px'}}/>
+          <Button type="primary" shape="circle" icon={<ClearOutlined />} onClick={this.resetTable} style={{ marginRight: '10px' }} />
+          <Button type="primary" shape="circle" icon={<SyncOutlined />} onClick={this.refreshTotal} style={{ marginRight: '10px' }} ghost/>
           <Button type="primary" shape="round" icon={<PlusOutlined />} onClick={this.showDrawer}>Add player</Button>
         </div>
         <Drawer
@@ -85,6 +113,16 @@ class Home extends Component {
               />
             </Form.Item>
           </Form>
+        </Drawer>
+        <Drawer
+          placement="bottom"
+          closable={false}
+          onClose={this.onCloseClearDrawer}
+          visible={this.state.clearVisible}
+          height="140px"
+        >
+          <Button type="primary" size="large" block style={{ margin: '5px 0' }} onClick={this.handleTableData}>Clean Data</Button>
+          <Button size="large" block style={{ margin: '5px 0' }} onClick={this.handleTableAll} danger>Clean All</Button>
         </Drawer>
         <MyTable
           dataSource={this.props.data}
