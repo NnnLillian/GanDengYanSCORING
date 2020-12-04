@@ -73,6 +73,12 @@ const defaultState = fromJS({
     money: 0.5, // 一张牌代表多少钱
     all: true, // 全关是否翻倍
     bomb: true, // 炸弹是否翻倍
+  },
+  // 检测数据是否存在问题
+  result: {
+    code: true,
+    msg: 'no problem',
+    game: ''
   }
 })
 
@@ -122,6 +128,8 @@ export default (state = defaultState, action) => {
         columns: defaultState.get('columns'),
         total: Map({})
       })
+    case actionTypes.CHECK_DATA:
+      return state.set('result', Map(tool.wrongRow(state.get('data').toJS())))
     default:
       return state;
   }

@@ -4,6 +4,7 @@ import { DeleteTwoTone, SettingTwoTone, AlertTwoTone, AlertOutlined } from '@ant
 import './style.css'
 import store from '../../store'
 import * as actionTypes from '../../store/constants';
+import * as actionCreators from '../../store/actionCreators';
 const EditableContext = React.createContext();
 
 const EditableRow = ({ index, ...props }) => {
@@ -85,21 +86,22 @@ const EditableCell = ({
 
 const renderSummary = (totalValue) => (totalValue.map(i => <Table.Summary.Cell>{i}</Table.Summary.Cell>))
 
-const checkSum = (totalValueList) => eval(totalValueList.join('+'))
+// const checkSum = (totalValueList) => eval(totalValueList.join('+'))
 
 class EditableTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dataSource: props.dataSource,
-      count: props.dataSource.length,
-      wrongMsg: {
-        msg:'try'
-      }
+      count: props.dataSource.length
     };
   }
 
-
+  handleCheckTable = () => {
+    store.dispatch({
+      type: actionTypes.CHECK_DATA
+    })
+  }
 
   operation = {
     title: <SettingTwoTone twoToneColor="#999" />,
@@ -124,6 +126,7 @@ class EditableTable extends React.Component {
     this.setState({
       dataSource: this.props.dataSource
     });
+    this.handleCheckTable()
   };
   handleAdd = () => {
     const action = {
@@ -133,6 +136,7 @@ class EditableTable extends React.Component {
     this.setState({
       dataSource: this.props.dataSource,
     });
+    this.handleCheckTable()
   };
   handleSave = (row) => {
     const newData = [...this.props.dataSource];
@@ -147,6 +151,7 @@ class EditableTable extends React.Component {
     this.setState({
       dataSource: this.props.dataSource,
     });
+    this.handleCheckTable()
   };
 
   render() {
@@ -197,7 +202,8 @@ class EditableTable extends React.Component {
                 <Table.Summary.Cell className="ant-table-cell-fix-left ant-table-cell-fix-left-last" colSpan={2} index={0}>Total</Table.Summary.Cell>
                 {renderSummary(this.props.totalValue)}
                 <Table.Summary.Cell fixed="right" className="total-result ant-table-cell-fix-right ant-table-cell-fix-right-first">
-                  {checkSum(this.props.totalValue) ? <Tooltip title="something wrong"><AlertTwoTone twoToneColor="#c21f30" /></Tooltip> : <AlertOutlined style={{ color: '#999' }} />}
+                  {/* {checkSum(this.props.totalValue) ? <Tooltip title="something wrong"><AlertTwoTone twoToneColor="#c21f30" /></Tooltip> : <AlertOutlined style={{ color: '#999' }} />} */}
+                  {!this.props.result.code ? <Tooltip title={`Round ${this.props.result.game} has ${this.props.result.msg}`}><AlertTwoTone twoToneColor="#c21f30" /></Tooltip> : <AlertOutlined style={{ color: '#999' }} />}
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             )

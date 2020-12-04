@@ -18,7 +18,7 @@ export const updateTableData = (list, key, defaultValue) => {
 export const insertTableData = (column, count) => {
   let newData = {}
   newData.key = new Date().getTime()
-  column.map(c => newData[c.dataIndex] = 0)
+  column.map(c => newData[c.dataIndex] = '0')
   newData.boom = 0;
   newData.game = count + 1;
   return newData
@@ -87,10 +87,15 @@ export const calcAccount = (total, money) => {
   return total
 }
 
+/**
+ * 检测是否有某行输入错误
+ * @param {Array}} data 
+ */
 export const wrongRow = (data) => {
   let result = {
     msg: 'no problem',
-    code: true
+    code: true, 
+    game: ''
   }
   data.forEach(item => {
     delete item.boom;
@@ -98,10 +103,12 @@ export const wrongRow = (data) => {
     if (scores.indexOf("0") !== scores.lastIndexOf("0")) {
       result.msg = "Several Winners?"
       result.code = false
+      result.game = item.game
     }
     if (scores.indexOf("0") === -1) {
       result.msg = "No Winner?"
-      result.code = true
+      result.code = false
+      result.game = item.game
     }
   })
   return result;

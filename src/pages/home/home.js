@@ -14,7 +14,7 @@ class Home extends Component {
   state = {
     visible: false,
     clearVisible: false,
-    inputValue: ''
+    inputValue: '',
   };
 
   showDrawer = () => {
@@ -128,6 +128,7 @@ class Home extends Component {
           dataSource={this.props.data}
           columns={this.props.columns}
           total={this.props.total}
+          result={this.props.result}
           totalValue={Object.values(this.props.total)}
           pagination={false}
           scroll={{ y: 600 }}
@@ -141,7 +142,8 @@ const mapStateToProps = (state) => {
   return {
     columns: state.get('columns').toJS(),
     data: state.get('data').toJS(),
-    total: state.get('total').toJS()
+    total: state.get('total').toJS(),
+    result: state.get('result').toJS()
   }
 }
 

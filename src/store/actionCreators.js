@@ -31,3 +31,7 @@ export const clearDataSource = () => ({
 export const clearColumn = () => ({
   type: actionTypes.CLEAR_COLUMN
 })
+
+export const checkSomethingWrong = () => ({
+  type:actionTypes.CHECK_DATA
+})
