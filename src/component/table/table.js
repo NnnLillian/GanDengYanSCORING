@@ -187,7 +187,7 @@ class EditableTable extends React.Component {
             marginBottom: 16,
           }}
         >
-          Add a row
+          Add a round
         </Button>
         <Table
           components={components}

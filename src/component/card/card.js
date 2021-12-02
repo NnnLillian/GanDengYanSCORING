@@ -50,7 +50,7 @@ class BasicCard extends Component {
     return (
       <Card title="Rules">
         <Grid style={girdStyle} hoverable={false}>
-          <Card type="inner" title="Money"  extra={<HighlightOutlined onClick={this.handleEditMoneyInput}/>}>
+          <Card type="inner" title="Base Value"  extra={<HighlightOutlined onClick={this.handleEditMoneyInput}/>}>
             <div style={{ margin: "20px" }}>
               {
                 !this.state.moneyInputEdit ?
@@ -72,9 +72,9 @@ class BasicCard extends Component {
         <Grid style={girdStyle} hoverable={false}>
           <Card type="inner" title="Double">
             <div style={{ margin: "20px" }}>
-              Double All Off <Switch style={{ float: 'right' }} onChange={this.onDoubleForAll} checked={this.props.allCheck} />
+              Not Takeout Cards <Switch style={{ float: 'right' }} onChange={this.onDoubleForAll} checked={this.props.allCheck} />
               <Divider />
-              Double The Bomb <Switch style={{ float: 'right' }} onChange={this.onDoubleForBomb} checked={this.props.bombCheck} />
+              Bomb <Switch style={{ float: 'right' }} onChange={this.onDoubleForBomb} checked={this.props.bombCheck} />
             </div>
           </Card>
         </Grid>

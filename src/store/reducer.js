@@ -24,19 +24,19 @@ const defaultState = fromJS({
       title: 'John',
       dataIndex: 'John',
       editable: true,
-      width: 80
+      width: 40
     },
     {
       title: 'lillian',
       dataIndex: 'lillian',
       editable: true,
-      width: 80
+      width: 40
     },
     {
       title: 'Sam',
       editable: true,
       dataIndex: 'Sam',
-      width: 80
+      width: 40
     }
   ],
   data: [

@@ -13,8 +13,8 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <MyMenu />
-        <Route path='/' exact component={Home}></Route>
-        <Route path='/settings' exact component={Settings}></Route>
+        <Route path='/scoring' exact component={Home}></Route>
+        <Route path='/scoring/settings' exact component={Settings}></Route>
       </BrowserRouter>
     </Provider>
   );

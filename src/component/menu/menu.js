@@ -20,11 +20,11 @@ class MyMenu extends React.Component {
       <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" style={{marginBottom:'18px'}}>
         <Menu.Item key="home" icon={<ReconciliationOutlined />}>
           Home
-          <Link to='/' />
+          <Link to='/scoring' />
         </Menu.Item>
         <Menu.Item key="settings" icon={<AppstoreOutlined />}>
           Settings
-          <Link to='/settings' />
+          <Link to='/scoring/settings' />
         </Menu.Item>
       </Menu>
     );
